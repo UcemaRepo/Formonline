@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Formulario UCEMA + WhatsApp</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f1f1f1;
+      margin: 0;
+      padding: 0;
+    }
+    .form-container {
+      max-width: 600px;
+      background-color: #fff;
+      margin: 40px auto;
+      padding: 30px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      border-radius: 8px;
+    }
+    h1 {
+      text-align: center;
+      color: #9d2235;
+    }
+    label {
+      display: block;
+      margin-top: 20px;
+      font-weight: 500;
+    }
+    input[type="text"], input[type="email"], input[type="tel"], select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    .checkbox-group {
+      margin-top: 10px;
+    }
+    .checkbox-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: normal;
+    }
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 30px;
+      background-color: #9d2235;
+      color: white;
+      border: none;
+      font-size: 16px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #801b2c;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h1>Formulario UCEMA</h1>
+    <form id="ucemaForm">
+      <label for="nombre">Nombre</label>
+      <input type="text" id="nombre" name="nombre" required>
+
+      <label for="apellido">Apellido</label>
+      <input type="text" id="apellido" name="apellido" required>
+
+      <label for="dni">DNI</label>
+      <input type="text" id="dni" name="dni">
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email">
+
+      <label for="telefono">Celular</label>
+      <input type="tel" id="telefono" name="telefono">
+
+      <label for="anio">¿En qué año terminás el colegio?</label>
+      <select id="anio" name="anio" required>
+        <option value="">Seleccioná una opción</option>
+        <option value="2025">2025</option>
+        <option value="2026">2026</option>
+        <option value="2027">2027</option>
+      </select>
+
+      <label for="carreras">Carreras de interés</label>
+      <div id="carreras" class="checkbox-group">
+        <label><input type="checkbox" name="carrera" value="Economía Empresarial"> Economía Empresarial</label>
+        <label><input type="checkbox" name="carrera" value="Abogacía"> Abogacía</label>
+        <label><input type="checkbox" name="carrera" value="Marketing"> Marketing</label>
+        <label><input type="checkbox" name="carrera" value="Ingeniería en Informática"> Ingeniería en Informática</label>
+        <label><input type="checkbox" name="carrera" value="Analítica de Negocios"> Analítica de Negocios</label>
+        <label><input type="checkbox" name="carrera" value="Ciencias Políticas"> Ciencias Políticas</label>
+        <label><input type="checkbox" name="carrera" value="Contador Público"> Contador Público</label>
+        <label><input type="checkbox" name="carrera" value="Relaciones Internacionales"> Relaciones Internacionales</label>
+        <label><input type="checkbox" name="carrera" value="Administración de Empresas"> Administración de Empresas</label>
+        <label><input type="checkbox" name="carrera" value="Finanzas"> Finanzas</label>
+        <label><input type="checkbox" name="carrera" value="Economía"> Economía</label>
+        <label><input type="checkbox" name="carrera" value="Negocios Digitales"> Negocios Digitales</label>
+        <label><input type="checkbox" name="carrera" value="Artes Liberales y Ciencias"> Artes Liberales y Ciencias</label>
+        <label><input type="checkbox" name="carrera" value="Actuario"> Actuario</label>
+        <label><input type="checkbox" name="carrera" value="Ingeniería en Inteligencia Artificial"> Ingeniería en Inteligencia Artificial</label>
+        <label><input type="checkbox" name="carrera" value="Programación"> Programación</label>
+        <label><input type="checkbox" name="carrera" value="Sin Definir"> Sin Definir</label>
+        <label><input type="checkbox" name="carrera" value="Ninguna de las anteriores"> Ninguna de las anteriores</label>
+      </div>
+
+      <button type="submit">Enviar</button>
+    </form>
+  </div>
+
+  <script>
+    const asesores = {
+      "Economía Empresarial": "5491136163074",
+      "Administración de Empresas": "5491136163074",
+      "Contador Público": "5491136163074",
+      "Negocios Digitales": "5491122688912",
+      "Actuario": "5491122688912",
+      "Economía": "5491128989950",
+      "Ingeniería en Inteligencia Artificial": "5491128989950",
+      "Finanzas": "5491141815223",
+      "Ingeniería en Informática": "5491141815223",
+      "Artes Liberales y Ciencias": "5491141815223",
+      "Abogacía": "5491136786247",
+      "Relaciones Internacionales": "5491136786247",
+      "Ciencias Políticas": "5491136786247",
+      "Analítica de Negocios": "5491140888081",
+      "Marketing": "5491140888081"
+    };
+
+    const SHEET_URL = "https://script.google.com/macros/s/AKfycbzYE25yvAQg8BXovGtCVqwUAZaLURp38DwaoGH4qrIcIvZP91tl2fc_AX32MLZoizaG/exec";
+
+    document.getElementById("ucemaForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const nombre = document.getElementById("nombre").value.trim();
+      const apellido = document.getElementById("apellido").value.trim();
+      const dni = document.getElementById("dni").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const telefonoInput = document.getElementById("telefono").value.trim();
+      const anio = document.getElementById("anio").value.trim();
+      const carreraChecks = document.querySelectorAll("input[name='carrera']:checked");
+      const carreras = Array.from(carreraChecks).map(el => el.value);
+
+      let carrerasTexto = "";
+      if (carreras.length === 1) {
+        carrerasTexto = carreras[0];
+      } else if (carreras.length === 2) {
+        carrerasTexto = carreras.join(" y ");
+      } else if (carreras.length > 2) {
+        carrerasTexto = carreras.slice(0, -1).join(", ") + " y " + carreras[carreras.length - 1];
+      }
+
+      const mensaje = `Hola! Soy ${nombre} ${apellido} y quiero recibir más información sobre ${carrerasTexto}. Termino el colegio en ${anio}.`;
+      const mensajeCodificado = encodeURIComponent(mensaje);
+
+      const contadorCarreras = {};
+      carreras.forEach(carrera => {
+        const tel = asesores[carrera];
+        if (tel) {
+          contadorCarreras[tel] = (contadorCarreras[tel] || 0) + 1;
+        }
+      });
+
+      let telefono = "5491140888081";
+      let max = 0;
+      for (let tel in contadorCarreras) {
+        if (contadorCarreras[tel] > max) {
+          max = contadorCarreras[tel];
+          telefono = tel;
+        }
+      }
+
+      // Enviar a Google Sheets
+      fetch(SHEET_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nombre, apellido, dni, email, telefono: telefonoInput, anio, carreras: carrerasTexto })
+      });
+
+      // Redirigir a WhatsApp
+      const link = `https://api.whatsapp.com/send?phone=${telefono}&text=${mensajeCodificado}`;
+      window.location.href = link;
+    });
+  </script>
+</body>
+</html>
